@@ -25,7 +25,9 @@ struct PocketWordsApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            FlipCardView(title: "kk") { wp in
+                print(" wp    \(wp)")
+            }
         }
         .modelContainer(sharedModelContainer)
     }
