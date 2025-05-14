@@ -121,12 +121,6 @@ PocketWords/
 
 ---
 
-## 📄 License
-
-MIT License © 2025 PocketWords Contributors.
-
----
-
 ## 📄 Screen Record
 
 https://github.com/user-attachments/assets/0995eb1f-7a7d-4c71-9b63-593c939f07cf
