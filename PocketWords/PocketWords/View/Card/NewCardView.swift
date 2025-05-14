@@ -73,7 +73,5 @@ struct NewCardView: View {
 }
 
 #Preview {
-    NewCardView { word in
-        print("New word added: \(word.title) - \(word.meaning)")
-    }
+    NewCardView { _ in }
 }

@@ -8,6 +8,22 @@
 import SwiftUI
 import SwiftData
 
+private enum Constants {
+    enum Card {
+        static let baseSize: CGFloat = 300
+        static let sizeStep: CGFloat = 20
+        static let cornerRadius: CGFloat = 15
+        static let opacityStep: CGFloat = 0.1
+    }
+    
+    enum Layout {
+        static let cardSpacing: CGFloat = 50
+        static let progressWidth: CGFloat = 300
+        static let progressHeight: CGFloat = 50
+        static let progressBackgroundOpacity: CGFloat = 0.3
+    }
+}
+
 struct CardStackView: View {
     @Environment(\.modelContext) private var context
     
@@ -18,48 +34,50 @@ struct CardStackView: View {
     @State private var viewModel = CardStackViewModel()
     
     private func getCardView(index: Int, word: Word) -> some View {
-        let _index = CGFloat(index)
-        let sizeDiff = _index * 20
-        let size = max(0, 300 - sizeDiff)
+        let idx = CGFloat(index)
+        let sizeDiff = idx * Constants.Card.sizeStep
+        let size = max(0, Constants.Card.baseSize - sizeDiff)
         let offset = min(size, sizeDiff)
-        let opacity = 1 - (0.1 * _index)
+        let opacity = 1 - (Constants.Card.opacityStep * idx)
 
         return CardView(
             title: word.title,
             description: word.meaning
         ) { input in
-            let check = viewModel.checkMeaning(input, with: word)
-            return check
+            viewModel.checkMeaning(input, with: word)
         } submit: { status in
             viewModel.submitAnswer(status, for: word, context: context)
         }
         .frame(width: size, height: size)
         .background(Color.accentColor.opacity(opacity))
-        .cornerRadius(15)
+        .cornerRadius(Constants.Card.cornerRadius)
         .offset(y: offset)
         .opacity(opacity)
         .allowsHitTesting(index == 0)
     }
+
     var body: some View {
         NavigationView {
-            VStack(spacing: 50) {
+            VStack(spacing: Constants.Layout.cardSpacing) {
                 HStack {
                     ProgressView(value: viewModel.xpProgress)
                         .progressViewStyle(.linear)
                         .foregroundStyle(Color.accentColor)
-                        Text(viewModel.xp + "xp")
-                            .font(.headline)
-                            .foregroundColor(.accentColor)
+
+                    Text("\(viewModel.xp)" + "xp")
+                        .font(.headline)
+                        .foregroundColor(.accentColor)
                 }
                 .padding()
-                .frame(width: 300, height: 50)
-                .background(Color.accentColor.opacity(0.3))
-                .cornerRadius(15)
-                
+                .frame(width: Constants.Layout.progressWidth, height: Constants.Layout.progressHeight)
+                .background(Color.accentColor.opacity(Constants.Layout.progressBackgroundOpacity))
+                .cornerRadius(Constants.Card.cornerRadius)
+
                 ZStack {
                     ForEach(Array(notAttemptedWords.enumerated().reversed()), id: \.element.id) { index, word in
                         getCardView(index: index, word: word)
                     }
+
                     Text("No cards to review!")
                         .font(.title2)
                         .foregroundColor(.gray)
@@ -99,9 +117,7 @@ struct CardStackView: View {
             Word(title: "Benevolent", meaning: "Kind and generous", status: .notAttempted),
             Word(title: "Capricious", meaning: "Impulsive and unpredictable", status: .notAttempted)
         ]
-        for word in sampleWords {
-            context.insert(word)
-        }
+        sampleWords.forEach { context.insert($0) }
 
         return CardStackView()
             .modelContainer(container)

@@ -38,6 +38,7 @@ struct CardView: View {
                     CardTextView(check: check, submit: submit)
                         .cornerRadius(15)
                         .accessibilityElement(children: .contain)
+                        .accessibilityLabel("Card submit")
                         .accessibilityHint("Enter the meaning and submit")
                 }
             }
@@ -61,12 +62,8 @@ struct CardView: View {
     CardView(
         title: "Example",
         description: "Description",
-        check: { input in
-            input.lowercased().trimmingCharacters(in: .whitespacesAndNewlines) == "مثال"
-        },
-        submit: { status in
-            print("Submitted with status: \(status)")
-        }
+        check: { _ in true },
+        submit: { _ in }
     )
     .frame(width: 300, height: 300)
     .background(Color.accentColor.opacity(1))

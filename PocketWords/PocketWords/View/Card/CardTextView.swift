@@ -69,12 +69,8 @@ struct CardTextView: View {
 
 #Preview {
     CardTextView(
-        check: { input in
-            input.lowercased().trimmingCharacters(in: .whitespacesAndNewlines) == "example"
-        },
-        submit: { status in
-            print("Submitted with status: \(status)")
-        }
+        check: { _ in true },
+        submit: { _ in }
     )
     .cornerRadius(15)
     .padding(20)
