@@ -391,7 +391,6 @@
 				CODE_SIGN_ENTITLEMENTS = PocketWords/PocketWords.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"PocketWords/Preview Content\"";
 				DEVELOPMENT_TEAM = MKC9BPM44M;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -430,7 +429,6 @@
 				CODE_SIGN_ENTITLEMENTS = PocketWords/PocketWords.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"PocketWords/Preview Content\"";
 				DEVELOPMENT_TEAM = MKC9BPM44M;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;

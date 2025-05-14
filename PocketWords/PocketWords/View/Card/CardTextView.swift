@@ -24,7 +24,7 @@ struct CardTextView: View {
                     fieldIsFocused = false
                 }
                 .accessibilityLabel("Meaning input field")
-                .accessibilityHint("Type the meaning of the word and press Return to submit your answer.")
+                .accessibilityHint("Type the meaning of the word and tap Done to submit your answer.")
                 .accessibilityValue(inputText)
             Button {
                 done(inputText)

@@ -14,13 +14,14 @@ struct CardView: View {
     
     var body: some View {
         ZStack {
+            Color.clear
             if flipped {
                 CardTextView(done: done)
                     .cornerRadius(15)
                     .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
                     .accessibilityElement(children: .contain)
                     .accessibilityLabel("Back of the card")
-                    .accessibilityHint("Enter the meaning and submit to flip")
+                    .accessibilityHint("Enter the meaning and submit")
             } else {
                 Text(title)
                     .foregroundColor(.white)
@@ -28,21 +29,17 @@ struct CardView: View {
                     .padding()
                     .accessibilityElement()
                     .accessibilityLabel("Word card: \(title)")
-                    .accessibilityHint("Double tap to flip and enter the meaning.")
+                    .accessibilityHint("Tap to flip and enter the meaning.")
             }
         }
         .padding(20)
-        .frame(maxWidth: 300, maxHeight: 300)
-        .background(flipped ? Color.indigo : Color.teal)
-        .cornerRadius(15)
+        .contentShape(Rectangle())
+        .onTapGesture { flipped.toggle() }
         .rotation3DEffect(
             flipped ? Angle(degrees: 180) : .zero,
             axis: (x: 0.0, y: 1.0, z: 0.0)
         )
         .animation(.default, value: flipped)
-        .onTapGesture {
-            flipped.toggle()
-        }
         .accessibilityAddTraits(.isButton)
         .accessibilityAction(named: "Flip Card") {
             flipped.toggle()

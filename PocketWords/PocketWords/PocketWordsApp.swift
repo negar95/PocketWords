@@ -12,7 +12,7 @@ import SwiftData
 struct PocketWordsApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            Item.self,
+            Word.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
@@ -25,9 +25,7 @@ struct PocketWordsApp: App {
 
     var body: some Scene {
         WindowGroup {
-            FlipCardView(title: "kk") { wp in
-                print(" wp    \(wp)")
-            }
+            CardStackView()
         }
         .modelContainer(sharedModelContainer)
     }
