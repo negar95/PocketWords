@@ -10,6 +10,7 @@ import SwiftUI
 struct CardView: View {
     @State private var flipped = false
     let title: String
+    let description: String
     let check: (String) -> Bool
     let submit: (Word.WordStatus) -> Void
     
@@ -17,20 +18,28 @@ struct CardView: View {
         ZStack {
             Color.clear
             if flipped {
-                CardTextView(check: check, submit: submit)
-                    .cornerRadius(15)
-                    .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
-                    .accessibilityElement(children: .contain)
-                    .accessibilityLabel("Back of the card")
-                    .accessibilityHint("Enter the meaning and submit")
-            } else {
-                Text(title)
+                Text(description)
                     .foregroundColor(.white)
                     .multilineTextAlignment(.center)
                     .padding()
+                    .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
                     .accessibilityElement()
-                    .accessibilityLabel("Word card: \(title)")
-                    .accessibilityHint("Tap to flip and enter the meaning.")
+                    .accessibilityLabel("Card description: \(description)")
+                    .accessibilityHint("The description of the card.")
+            } else {
+                VStack {
+                    Text(title)
+                        .foregroundColor(.white)
+                        .multilineTextAlignment(.center)
+                        .padding()
+                        .accessibilityElement()
+                        .accessibilityLabel("Card title: \(title)")
+                        .accessibilityHint("Tap to see the description")
+                    CardTextView(check: check, submit: submit)
+                        .cornerRadius(15)
+                        .accessibilityElement(children: .contain)
+                        .accessibilityHint("Enter the meaning and submit")
+                }
             }
         }
         .padding(20)
@@ -51,6 +60,7 @@ struct CardView: View {
 #Preview {
     CardView(
         title: "Example",
+        description: "Description",
         check: { input in
             input.lowercased().trimmingCharacters(in: .whitespacesAndNewlines) == "مثال"
         },

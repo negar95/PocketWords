@@ -24,7 +24,10 @@ struct CardStackView: View {
         let offset = min(size, sizeDiff)
         let opacity = 1 - (0.1 * _index)
 
-        return CardView(title: word.title) { input in
+        return CardView(
+            title: word.title,
+            description: word.meaning
+        ) { input in
             let check = viewModel.checkMeaning(input, with: word)
             return check
         } submit: { status in

@@ -14,7 +14,10 @@ final class CardStackViewModel {
     var xp: String = "0"
     var xpProgress: Double = 0
     func checkMeaning(_ input: String, with word: Word) -> Bool {
-        input.withoutWhitespace.caseInsensitiveCompare(word.meaning.withoutWhitespace) == .orderedSame
+        input.trimmingCharacters(in: .whitespacesAndNewlines)
+            .caseInsensitiveCompare(
+                word.meaning.trimmingCharacters(in: .whitespacesAndNewlines)
+            ) == .orderedSame
     }
     func submitAnswer(_ status: Word.WordStatus, for word: Word, context: ModelContext) {
         word.status = status
