@@ -39,15 +39,14 @@ struct CardStackView: View {
     }
     var body: some View {
         NavigationView {
-            VStack {
+            VStack(spacing: 50) {
                 HStack {
-                    Text("XP:")
-                        .font(.headline)
-                        .foregroundColor(.accentColor)
-                    ProgressView(value: viewModel.xp)
+                    ProgressView(value: viewModel.xpProgress)
                         .progressViewStyle(.linear)
                         .foregroundStyle(Color.accentColor)
-                    
+                        Text(viewModel.xp + "xp")
+                            .font(.headline)
+                            .foregroundColor(.accentColor)
                 }
                 .padding()
                 .frame(width: 300, height: 50)
@@ -84,5 +83,26 @@ struct CardStackView: View {
                 viewModel.updateXP(context: context)
             }
         }
+    }
+}
+
+#Preview {
+    do {
+        let config = ModelConfiguration(isStoredInMemoryOnly: true)
+        let container = try ModelContainer(for: Word.self, configurations: config)
+        let context = container.mainContext
+        let sampleWords = [
+            Word(title: "Abate", meaning: "To lessen", status: .notAttempted),
+            Word(title: "Benevolent", meaning: "Kind and generous", status: .notAttempted),
+            Word(title: "Capricious", meaning: "Impulsive and unpredictable", status: .notAttempted)
+        ]
+        for word in sampleWords {
+            context.insert(word)
+        }
+
+        return CardStackView()
+            .modelContainer(container)
+    } catch {
+        return Text("Failed to load preview: \(error.localizedDescription)")
     }
 }

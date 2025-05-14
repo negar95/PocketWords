@@ -47,3 +47,18 @@ struct CardView: View {
         }
     }
 }
+
+#Preview {
+    CardView(
+        title: "Example",
+        check: { input in
+            input.lowercased().trimmingCharacters(in: .whitespacesAndNewlines) == "مثال"
+        },
+        submit: { status in
+            print("Submitted with status: \(status)")
+        }
+    )
+    .frame(width: 300, height: 300)
+    .background(Color.accentColor.opacity(1))
+    .cornerRadius(15)
+}

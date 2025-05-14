@@ -11,10 +11,10 @@ import SwiftUI
 
 @Observable
 final class CardStackViewModel {
-    var xp: Double = 0
+    var xp: String = "0"
+    var xpProgress: Double = 0
     func checkMeaning(_ input: String, with word: Word) -> Bool {
-        input.lowercased().trimmingCharacters(in: .whitespacesAndNewlines) ==
-        word.meaning.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)
+        input.withoutWhitespace.caseInsensitiveCompare(word.meaning.withoutWhitespace) == .orderedSame
     }
     func submitAnswer(_ status: Word.WordStatus, for word: Word, context: ModelContext) {
         word.status = status
@@ -40,6 +40,7 @@ final class CardStackViewModel {
         guard let correctCount = try? context.fetchCount(correctDescriptor),
               let allCount = try? context.fetchCount(allDescriptor)
         else { return }
-        xp = Double(correctCount) / Double(allCount)
+        xp = String(correctCount * 10)
+        xpProgress = min(1, Double(correctCount) / Double(max(1, allCount)))
     }
 }

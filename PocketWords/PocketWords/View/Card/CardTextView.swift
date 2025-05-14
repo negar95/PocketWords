@@ -59,9 +59,24 @@ struct CardTextView: View {
                     .accessibilityAddTraits(.isButton)
                 }
                 .padding(5)
-                .background(.white.opacity(0.6))
+                .background(.white.opacity(0.5))
+                .cornerRadius(15)
                 .accessibilityElement()
             }
         }
     }
+}
+
+#Preview {
+    CardTextView(
+        check: { input in
+            input.lowercased().trimmingCharacters(in: .whitespacesAndNewlines) == "example"
+        },
+        submit: { status in
+            print("Submitted with status: \(status)")
+        }
+    )
+    .cornerRadius(15)
+    .padding(20)
+    .background(Color.accentColor.opacity(1))
 }

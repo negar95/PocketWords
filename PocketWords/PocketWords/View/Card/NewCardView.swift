@@ -7,11 +7,6 @@
 
 import SwiftUI
 
-struct NewCard {
-    let title: String?
-    let description: String?
-}
-
 struct NewCardView: View {
     @State private var titleText = ""
     @State private var descriptionText = ""
@@ -74,5 +69,11 @@ struct NewCardView: View {
     private func submitWord() {
         guard !titleText.isEmpty, !descriptionText.isEmpty else { return }
         done(Word(title: titleText, meaning: descriptionText, status: .notAttempted))
+    }
+}
+
+#Preview {
+    NewCardView { word in
+        print("New word added: \(word.title) - \(word.meaning)")
     }
 }
