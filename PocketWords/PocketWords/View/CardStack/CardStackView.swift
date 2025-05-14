@@ -10,9 +10,10 @@ import SwiftData
 
 struct CardStackView: View {
     @Environment(\.modelContext) private var context
+    
     @Query(filter: #Predicate<Word> { $0._status == "notAttempted" } )
-    private var words: [Word]
-
+    private var notAttemptedWords: [Word]
+    
     @State private var showingNewCard = false
     @State private var viewModel = CardStackViewModel()
     
@@ -24,9 +25,10 @@ struct CardStackView: View {
         let opacity = 1 - (0.1 * _index)
 
         return CardView(title: word.title) { input in
-            if index == 0 {
-                viewModel.submitAnswer(input, for: word, context: context)
-            }
+            let check = viewModel.checkMeaning(input, with: word)
+            return check
+        } submit: { status in
+            viewModel.submitAnswer(status, for: word, context: context)
         }
         .frame(width: size, height: size)
         .background(Color.accentColor.opacity(opacity))
@@ -37,18 +39,34 @@ struct CardStackView: View {
     }
     var body: some View {
         NavigationView {
-            ZStack {
-                ForEach(Array(words.enumerated().reversed()), id: \.element.id) { index, word in
-                    getCardView(index: index, word: word)
+            VStack {
+                HStack {
+                    Text("XP:")
+                        .font(.headline)
+                        .foregroundColor(.accentColor)
+                    ProgressView(value: viewModel.xp)
+                        .progressViewStyle(.linear)
+                        .foregroundStyle(Color.accentColor)
+                    
                 }
-                Text("No cards to review!")
-                    .font(.title2)
-                    .foregroundColor(.gray)
-                    .opacity(words.isEmpty ? 1 : 0)
+                .padding()
+                .frame(width: 300, height: 50)
+                .background(Color.accentColor.opacity(0.3))
+                .cornerRadius(15)
+                
+                ZStack {
+                    ForEach(Array(notAttemptedWords.enumerated().reversed()), id: \.element.id) { index, word in
+                        getCardView(index: index, word: word)
+                    }
+                    Text("No cards to review!")
+                        .font(.title2)
+                        .foregroundColor(.gray)
+                        .opacity(notAttemptedWords.isEmpty ? 1 : 0)
+                }
             }
             .navigationTitle("PocketWords")
             .toolbar {
-                ToolbarItem(placement: .automatic) {
+                ToolbarItem(placement: .topBarTrailing) {
                     Button(action: { showingNewCard = true }) {
                         Image(systemName: "plus.circle.fill")
                             .font(.title2)
@@ -61,6 +79,9 @@ struct CardStackView: View {
                     viewModel.addWord(newWord, context: context)
                     showingNewCard = false
                 }
+            }
+            .onAppear {
+                viewModel.updateXP(context: context)
             }
         }
     }

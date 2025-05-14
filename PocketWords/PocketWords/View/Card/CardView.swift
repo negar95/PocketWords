@@ -10,13 +10,14 @@ import SwiftUI
 struct CardView: View {
     @State private var flipped = false
     let title: String
-    let done: (String) -> Void
+    let check: (String) -> Bool
+    let submit: (Word.WordStatus) -> Void
     
     var body: some View {
         ZStack {
             Color.clear
             if flipped {
-                CardTextView(done: done)
+                CardTextView(check: check, submit: submit)
                     .cornerRadius(15)
                     .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
                     .accessibilityElement(children: .contain)
